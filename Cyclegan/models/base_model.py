@@ -1,5 +1,4 @@
 import os
-# import torch
 import jittor as jt
 from collections import OrderedDict
 from abc import ABC, abstractmethod
@@ -35,8 +34,6 @@ class BaseModel(ABC):
         self.isTrain = opt.isTrain
         # self.device = jt.use_device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else jt.use_device('cpu')  # get device name: CPU or GPU
         self.save_dir = os.path.join(opt.checkpoints_dir, opt.name)  # save all the checkpoints to save_dir
-        # if opt.preprocess != 'scale_width':  # with [scale_width], input images might have different sizes, which hurts the performance of cudnn.benchmark.
-        #     torch.backends.cudnn.benchmark = True
         self.loss_names = []
         self.model_names = []
         self.visual_names = []
@@ -151,13 +148,7 @@ class BaseModel(ABC):
             if isinstance(name, str):
                 save_filename = '%s_net_%s.pth' % (epoch, name)
                 save_path = os.path.join(self.save_dir, save_filename)
-                net = getattr(self, 'net' + name)
-
-                # if len(self.gpu_ids) > 0 and torch.cuda.is_available():
-                #     jt.save(net.module.cpu().state_dict(), save_path)
-                #     net.cuda(self.gpu_ids[0])
-                # else:
-                #     
+                net = getattr(self, 'net' + name)  
                 jt.save(net.state_dict(), save_path)
 
     def __patch_instance_norm_state_dict(self, state_dict, module, keys, i=0):
@@ -184,18 +175,9 @@ class BaseModel(ABC):
                 load_filename = '%s_net_%s.pt' % (epoch, name)
                 load_path = os.path.join(self.save_dir, load_filename)
                 net = getattr(self, 'net' + name)
-                # if isinstance(net, torch.nn.DataParallel):
-                #     net = net.module
-                print('loading the model from %s' % load_path)
-                # # if you are using PyTorch newer than 0.4 (e.g., built from
-                # # GitHub source), you can remove str() on self.device
-                # state_dict = jt.load(load_path)#, map_location=str(self.device)
-                # if hasattr(state_dict, '_metadata'):
-                #     del state_dict._metadata
 
-                # # patch InstanceNorm checkpoints prior to 0.4
-                # for key in list(state_dict.keys()):  # need to copy keys here because we mutate in loop
-                #     self.__patch_instance_norm_state_dict(state_dict, net, key.split('.'))
+                print('loading the model from %s' % load_path)
+
                 net.load_state_dict(jt.load(load_path))
 
     def print_networks(self, verbose):

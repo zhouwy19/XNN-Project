@@ -1,12 +1,7 @@
-# import torch
-# import torch.nn as nn
-# from torch.nn import init
 import functools
-# from torch.optim import LRScheduler
 import jittor as jt
 import jittor.nn as nn
 from jittor.nn import init
-# from jittor.optim import LRScheduler
 import jittor.optim as op
 
 ###############################################################################
@@ -50,8 +45,6 @@ def get_scheduler(optimizer, opt):
 
     For 'linear', we keep the same learning rate for the first <opt.n_epochs> epochs
     and linearly decay the rate to zero over the next <opt.n_epochs_decay> epochs.
-    For other schedulers (step, plateau, and cosine), we use the default PyTorch schedulers.
-    See https://pytorch.org/docs/stable/optim.html for more details.
     """
     if opt.lr_policy == 'linear':
         def lambda_rule(epoch):
@@ -77,7 +70,7 @@ def init_weights(net, init_type='normal', init_gain=0.02):
         init_type (str) -- the name of an initialization method: normal | xavier | kaiming | orthogonal
         init_gain (float)    -- scaling factor for normal, xavier and orthogonal.
 
-    We use 'normal' in the original pix2pix and CycleGAN paper. But xavier and kaiming might
+    'normal' was used in the original CycleGAN paper. But xavier and kaiming might
     work better for some applications. Feel free to try yourself.
     """
     def init_func(m):  # define the initialization function
@@ -90,7 +83,7 @@ def init_weights(net, init_type='normal', init_gain=0.02):
             elif init_type == 'kaiming':
                 init.kaiming_normal_(m.weight, a=0, mode='fan_in')
             elif init_type == 'orthogonal':
-                init.orthogonal_(m.weight, gain=init_gain)#jittor有这玩意儿不
+                init.orthogonal_(m.weight, gain=init_gain)
             else:
                 raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
             if hasattr(m, 'bias') and m.bias is not None:
@@ -113,10 +106,7 @@ def init_net(net, init_type='normal', init_gain=0.02, gpu_ids=[]):
 
     Return an initialized network.
     """
-    # if len(gpu_ids) > 0:
-    #     # assert(torch.cuda.is_available())
-    #     net.to(gpu_ids[0])
-    #     # net = torch.nn.DataParallel(net, gpu_ids)  # multi-GPUs
+
     init_weights(net, init_type, init_gain=init_gain)
     return net
 
@@ -143,7 +133,6 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
 
         Resnet-based generator: [resnet_6blocks] (with 6 Resnet blocks) and [resnet_9blocks] (with 9 Resnet blocks)
         Resnet-based generator consists of several Resnet blocks between a few downsampling/upsampling operations.
-        We adapt Torch code from Justin Johnson's neural style transfer project (https://github.com/jcjohnson/fast-neural-style).
 
 
     The generator has been initialized by <init_net>. It uses RELU for non-linearity.
@@ -287,7 +276,6 @@ def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', const
         netD (network)              -- discriminator network
         real_data (tensor array)    -- real images
         fake_data (tensor array)    -- generated images from the generator
-        device (str)                -- GPU / CPU: from torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
         type (str)                  -- if we mix real and fake data or not [real | fake | mixed].
         constant (float)            -- the constant used in formula ( ||gradient||_2 - constant)^2
         lambda_gp (float)           -- weight for this loss
@@ -300,7 +288,7 @@ def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', const
         elif type == 'fake':
             interpolatesv = fake_data
         elif type == 'mixed':
-            alpha = jt.rand(real_data.shape[0], 1)#, device=device 不需要指定device
+            alpha = jt.rand(real_data.shape[0], 1)
             alpha = alpha.expand(real_data.shape[0], real_data.nelement() // real_data.shape[0]).contiguous().view(*real_data.shape)
             interpolatesv = alpha * real_data + ((1 - alpha) * fake_data)
         else:
@@ -318,10 +306,7 @@ def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', const
 
 
 class ResnetGenerator(nn.Module):
-    """Resnet-based generator that consists of Resnet blocks between a few downsampling/upsampling operations.
-
-    We adapt Torch code and idea from Justin Johnson's neural style transfer project(https://github.com/jcjohnson/fast-neural-style)
-    """
+    """Resnet-based generator that consists of Resnet blocks between a few downsampling/upsampling operations."""
 
     def __init__(self, input_nc, output_nc, ngf=64, norm_layer=nn.BatchNorm2d, use_dropout=False, n_blocks=6, padding_type='reflect'):
         """Construct a Resnet-based generator

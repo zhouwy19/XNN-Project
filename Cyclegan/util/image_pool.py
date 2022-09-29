@@ -1,6 +1,5 @@
 import random
 import jittor
-# import torch
 
 
 class ImagePool():

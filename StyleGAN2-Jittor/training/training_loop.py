@@ -52,7 +52,7 @@ def training_loop(cfg):
         transform.ImageNormalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
     ])
     
-    loader = jt.dataset.ImageFolder(cfg.data_path, transform=transformer).set_attrs(batch_size=cfg.batch_size, shuffle=True, drop_last=False)
+    loader = jt.dataset.ImageFolder(cfg.data_path, transform=transformer).set_attrs(batch_size=cfg.batch_size, shuffle=True, drop_last=True)
 
     if jt.rank == 0:
         print('Loading networks...')
@@ -145,11 +145,10 @@ def training_loop(cfg):
     #     return pl_mean, G_loss.item()
 
     num_iter = 0
-
     for epoch in range(cfg.num_epoch):
         for idx, batch in enumerate(tqdm(loader)):
             real_img, labels = batch
-            if real_img.shape[0] != cfg.batch_size // 3:
+            if real_img.shape[0] != cfg.batch_size // cfg.num_gpus:
                 break
 
             noise = mixing_noise(cfg.batch_size, cfg.z_dim, cfg.style_mixing_prob)

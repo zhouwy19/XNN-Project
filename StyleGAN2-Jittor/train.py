@@ -55,12 +55,20 @@ def get_config():
         default=None,
         help="path to the checkpoints to resume training",
     )
+    parser.add_argument(
+        "--num_gpus",
+        type=int,
+        default=None,
+        help="number of gpus to use",
+    )
     parser.add_argument("--lr", type=float, default=0.002, help="learning rate")
     parser.add_argument(
         "--wandb", action="store_true", help="use weights and biases logging"
     )
     args = parser.parse_args()
 
+    if args.batch is not None:
+        config.batch_size = args.batch
     if args.lr is not None:
         config.glr = args.lr
         config.dlr = args.lr
@@ -76,6 +84,8 @@ def get_config():
         config.use_wandb = True
     if args.n_sample is not None:
         config.sample_size = args.n_sample
+    if args.num_gpus is not None:
+        config.num_gpus = args.num_gpus
     if args.ckpt_path is not None:
         config.ckpt_path = args.ckpt_path
         config.g_pretrained = os.path.join(config.ckpt_path, config.name, 'G.pkl')

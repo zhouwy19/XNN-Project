@@ -10,7 +10,6 @@ from pathlib import Path
 import argparse
 from tqdm import tqdm
 import sys
-from cleanfid import fid
 from utils.visualize import visualize_training
 
 def error(msg):

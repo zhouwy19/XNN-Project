@@ -4,7 +4,6 @@ It also includes common transformation functions (e.g., get_transform, __scale_w
 """
 import random
 import numpy as np
-# import torch.utils.data as data
 import jittor.dataset as dataset
 from PIL import Image
 import torchvision.transforms as transforms
@@ -91,7 +90,7 @@ def get_transform(opt, params=None, grayscale=False, method=transforms.Interpola
 
     if 'crop' in opt.preprocess:
         if params is None:
-            transform_list.append(transforms.RandomCrop(opt.crop_size))  # ramdoncrop
+            transform_list.append(transforms.RandomCrop(opt.crop_size))  
         else:  
             transform_list.append(transforms.Lambda(lambda img: __crop(img, params['crop_pos'], opt.crop_size)))
 

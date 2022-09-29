@@ -11,7 +11,7 @@ Now you can use the dataset class by specifying flag '--dataset_mode dummy'.
 See our template dataset class 'template_dataset.py' for more details.
 """
 import importlib
-import torch.utils.data
+import jittor.dataset
 from data.base_dataset import BaseDataset
 
 
@@ -72,11 +72,10 @@ class CustomDatasetDataLoader():
         dataset_class = find_dataset_using_name(opt.dataset_mode)
         self.dataset = dataset_class(opt)
         print("dataset [%s] was created" % type(self.dataset).__name__)
-        self.dataloader = torch.utils.data.DataLoader(
+        self.dataloader = jittor.dataset.Dataset(
             self.dataset,
             batch_size=opt.batch_size,
-            # shuffle=not opt.serial_batches,
-            shuffle = True,
+            shuffle=not opt.serial_batches,
             num_workers=int(opt.num_threads))
 
     def load_data(self):

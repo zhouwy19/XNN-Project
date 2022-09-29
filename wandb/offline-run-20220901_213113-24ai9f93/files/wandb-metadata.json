@@ -1,0 +1,36 @@
+{
+    "os": "Linux-4.15.0-29-generic-x86_64-with-Ubuntu-18.04-bionic",
+    "python": "3.7.5",
+    "heartbeatAt": "2022-09-01T13:31:13.944158",
+    "startedAt": "2022-09-01T13:31:13.796201",
+    "docker": null,
+    "gpu": "NVIDIA TITAN RTX",
+    "gpu_count": 4,
+    "cpu_count": 48,
+    "cuda": null,
+    "args": [
+        "--dataroot",
+        "./datasets/facades",
+        "--name",
+        "facades_pix2pix",
+        "--model",
+        "pix2pix",
+        "--direction",
+        "BtoA",
+        "--use_wandb",
+        "--display_id",
+        "-1"
+    ],
+    "state": "running",
+    "program": "train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix.git",
+        "commit": "eb6ae80412e23c09b4317b04d889f1af27526d2d"
+    },
+    "email": null,
+    "root": "/home/pzh/Jitor_Compare/pytorch-CycleGAN-and-pix2pix",
+    "host": "jittor03",
+    "username": "pzh",
+    "executable": "/usr/bin/python3.7"
+}

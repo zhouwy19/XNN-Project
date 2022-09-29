@@ -1,0 +1,15 @@
+2022-09-01 21:43:14,711 INFO    StreamThr :21930 [internal.py:wandb_internal():93] W&B internal server running at pid: 21930, started at: 2022-09-01 21:43:14.710026
+2022-09-01 21:43:14,714 DEBUG   HandlerThread:21930 [handler.py:handle_request():141] handle_request: status
+2022-09-01 21:43:14,716 DEBUG   SenderThread:21930 [sender.py:send_request():316] send_request: status
+2022-09-01 21:43:14,719 INFO    WriterThread:21930 [datastore.py:open_for_write():75] open: /home/pzh/Jitor_Compare/pytorch-CycleGAN-and-pix2pix/wandb/offline-run-20220901_214314-mg0mb8tq/run-mg0mb8tq.wandb
+2022-09-01 21:43:14,802 DEBUG   HandlerThread:21930 [handler.py:handle_request():141] handle_request: run_start
+2022-09-01 21:43:14,810 DEBUG   HandlerThread:21930 [meta.py:__init__():35] meta init
+2022-09-01 21:43:14,810 DEBUG   HandlerThread:21930 [meta.py:__init__():50] meta init done
+2022-09-01 21:43:14,810 DEBUG   HandlerThread:21930 [meta.py:probe():216] probe
+2022-09-01 21:43:14,819 DEBUG   HandlerThread:21930 [meta.py:_setup_git():206] setup git
+2022-09-01 21:43:14,837 DEBUG   HandlerThread:21930 [meta.py:_setup_git():213] setup git done
+2022-09-01 21:43:14,838 DEBUG   HandlerThread:21930 [meta.py:_save_pip():54] save pip
+2022-09-01 21:43:14,839 DEBUG   HandlerThread:21930 [meta.py:_save_pip():68] save pip done
+2022-09-01 21:43:14,839 DEBUG   HandlerThread:21930 [meta.py:probe():254] probe done
+2022-09-01 23:54:59,608 INFO    MainThread:21930 [internal.py:handle_exit():80] Internal process exited
+2022-09-01 23:54:59,610 WARNING MsgRouterThr:21930 [router.py:message_loop():73] EOFError seen in message_loop

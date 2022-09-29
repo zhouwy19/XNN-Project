@@ -56,11 +56,6 @@ def process_cityscapes(gtFine_dir, leftImg8bit_dir, output_dir, phase):
         savepath = os.path.join(savedir, "%d.jpg" % i)
         sidebyside.save(savepath, format='JPEG', subsampling=0, quality=100)
 
-        # data for cyclegan where the two images are stored at two distinct directories
-        savepath = os.path.join(savedir + 'A', "%d_A.jpg" % i)
-        photo.save(savepath, format='JPEG', subsampling=0, quality=100)
-        savepath = os.path.join(savedir + 'B', "%d_B.jpg" % i)
-        segmap.save(savepath, format='JPEG', subsampling=0, quality=100)
         
         if i % (len(segmap_paths) // 10) == 0:
             print("%d / %d: last image saved at %s, " % (i, len(segmap_paths), savepath))

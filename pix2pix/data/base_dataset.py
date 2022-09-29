@@ -4,7 +4,6 @@ It also includes common transformation functions (e.g., get_transform, __scale_w
 """
 import random
 import numpy as np
-# import torch.utils.data as data
 import jittor.dataset as dataset
 from PIL import Image
 import torchvision.transforms as transforms

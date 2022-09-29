@@ -1,12 +1,7 @@
-# import torch
-# import torch.nn as nn
-# from torch.nn import init
 import functools
-# from torch.optim import LRScheduler
 import jittor as jt
 import jittor.nn as nn
 from jittor.nn import init
-# from jittor.optim import LRScheduler
 import jittor.optim as op
 
 ###############################################################################
@@ -29,9 +24,9 @@ def get_norm_layer(norm_type='instance'):
     For InstanceNorm, we do not use learnable affine parameters. We do not track running statistics.
     """
     if norm_type == 'batch':
-        norm_layer = functools.partial(nn.BatchNorm2d, affine=True)#, track_running_stats=True jt没这玩意儿
+        norm_layer = functools.partial(nn.BatchNorm2d, affine=True)
     elif norm_type == 'instance':
-        norm_layer = functools.partial(nn.InstanceNorm2d, affine=False, track_running_stats=False)
+        norm_layer = functools.partial(nn.InstanceNorm2d, affine=False)
     elif norm_type == 'none':
         def norm_layer(x):
             return Identity()
@@ -50,8 +45,8 @@ def get_scheduler(optimizer, opt):
 
     For 'linear', we keep the same learning rate for the first <opt.n_epochs> epochs
     and linearly decay the rate to zero over the next <opt.n_epochs_decay> epochs.
-    For other schedulers (step, plateau, and cosine), we use the default PyTorch schedulers.
-    See https://pytorch.org/docs/stable/optim.html for more details.
+    For other schedulers (step, plateau, and cosine), we use the default Jittor schedulers.
+    See https://cg.cs.tsinghua.edu.cn/jittor/assets/docs/jittor.optim.html for more details.
     """
     if opt.lr_policy == 'linear':
         def lambda_rule(epoch):
@@ -89,8 +84,6 @@ def init_weights(net, init_type='normal', init_gain=0.02):
                 init.xavier_gauss_(m.weight, gain=init_gain)
             elif init_type == 'kaiming':
                 init.kaiming_normal_(m.weight, a=0, mode='fan_in')
-            elif init_type == 'orthogonal':
-                init.orthogonal_(m.weight, gain=init_gain)#jittor有这玩意儿不
             else:
                 raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
             if hasattr(m, 'bias') and m.bias is not None:
@@ -113,10 +106,6 @@ def init_net(net, init_type='normal', init_gain=0.02, gpu_ids=[]):
 
     Return an initialized network.
     """
-    # if len(gpu_ids) > 0:
-    #     # assert(torch.cuda.is_available())
-    #     net.to(gpu_ids[0])
-    #     # net = torch.nn.DataParallel(net, gpu_ids)  # multi-GPUs
     init_weights(net, init_type, init_gain=init_gain)
     return net
 
@@ -133,7 +122,6 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
         use_dropout (bool) -- if use dropout layers.
         init_type (str)    -- the name of our initialization method.
         init_gain (float)  -- scaling factor for normal, xavier and orthogonal.
-        gpu_ids (int list) -- which GPUs the network runs on: e.g., 0,1,2
 
     Returns a generator
 
@@ -175,7 +163,6 @@ def define_D(input_nc, ndf, netD, n_layers_D=3, norm='batch', init_type='normal'
         norm (str)         -- the type of normalization layers used in the network.
         init_type (str)    -- the name of the initialization method.
         init_gain (float)  -- scaling factor for normal, xavier and orthogonal.
-        gpu_ids (int list) -- which GPUs the network runs on: e.g., 0,1,2
 
     Returns a discriminator
 
@@ -300,7 +287,7 @@ def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', const
         elif type == 'fake':
             interpolatesv = fake_data
         elif type == 'mixed':
-            alpha = jt.rand(real_data.shape[0], 1)#, device=device 不需要指定device
+            alpha = jt.rand(real_data.shape[0], 1)
             alpha = alpha.expand(real_data.shape[0], real_data.nelement() // real_data.shape[0]).contiguous().view(*real_data.shape)
             interpolatesv = alpha * real_data + ((1 - alpha) * fake_data)
         else:

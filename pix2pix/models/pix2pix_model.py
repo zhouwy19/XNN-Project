@@ -1,4 +1,3 @@
-# import torch
 import jittor as jt
 from .base_model import BaseModel
 from . import networks

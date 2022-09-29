@@ -4,7 +4,7 @@ from data.image_folder import make_dataset
 from skimage import color  # require skimage
 from PIL import Image
 import numpy as np
-import torchvision.transforms as transforms
+import jittor.transform as transforms
 
 
 class ColorizationDataset(BaseDataset):

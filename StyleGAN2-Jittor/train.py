@@ -74,6 +74,7 @@ def get_config():
         config.dlr = args.lr
     if args.data_path is not None:
         config.name = os.path.basename(args.data_path)
+        config_data_path = args.data_path
     if args.epoch is not None:
         config.num_epoch = args.epoch
     if args.d_reg_every is not None:

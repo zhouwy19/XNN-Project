@@ -6,7 +6,7 @@ import random
 import numpy as np
 import jittor.dataset as dataset
 from PIL import Image
-import torchvision.transforms as transforms
+import jittor.transform as transforms
 from abc import ABC, abstractmethod
 
 

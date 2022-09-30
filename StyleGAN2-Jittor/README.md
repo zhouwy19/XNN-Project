@@ -16,35 +16,25 @@ pip install -r requirements.txt
 Preprocessing of datasets is also adapted (and simplified) from NVIDIA's official implementation. 
 Please run the following to generate a dataset json file for training.
 ```
-python training/dataset.py --source "DATA_PATH" \
-                        --save-path "SAVE_PATH" \
-                        --transform "TRANSFORM_METHOD" \
-                        --resize-filter "FILTER" \
-                        --width WIDTH \
-                        --height HEIGHT \
-                        --max-images MAX_IMAGE_NUMBER
+python training/dataset.py --source "DATA_PATH" --save-path "SAVE_PATH" 
 ```
 For example, for processing the FFHQ dataset, you may want to run:
 ```
 python training/dataset.py --source "./FFHQ" \ # please replace with path to local FFHQ folder
-                        --save-path "./dataset" \ 
-                        --transform "center-crop-wide" \
-                        --resize-filter "box" \
-                        --width 128 \
-                        --height 128 
+                        --save-path "./dataset" 
 ```
 After preprocessing is complete, the save-path will contain a dataset.json file containing critical information. If preprocessing is somehow interrupted, note that dataset.py requires the target folder to be completely empty to function properly.  
 
 ## Training
 To train a model, run 
 ```
-python train.py --data_path DATAPATH --ckpt_path CKPTPATH
+python train.py --data_path DATAPATH --ckpt_path PATH_TO_SAVE_TRAINED_MODEL
 ```
 
 ## Evaluation
 To evaluate the trained model with FID score, tun
 ```
-python train.py --data_path DATAPATH --eval_path EVALPATH --ckpt_path CKPTPATH
+python train.py --data_path DATAPATH --eval_path EVAL_IMAGE_PATH --ckpt_path PATH_TO_SAVE_TRAINED_MODEL
 ```
 
 ## Acknowledgements

@@ -25,7 +25,9 @@ To see more about datasets, please check the [datasets](https://github.com/zhouw
 
 Download a dataset(e.g. dacades)：
 
-`bash ./datasets/download_pix2pix_dataset.sh facades`
+```
+bash ./datasets/download_pix2pix_dataset.sh facades
+```
 
 ### Train the Model
 

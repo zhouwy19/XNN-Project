@@ -75,7 +75,7 @@ def training_loop(cfg):
             D.load(cfg.d_pretrained)
             G_ema.load(cfg.g_ema_pretrained)
         else:
-            raise Exception('There is no trained generator or discriminator at this location.')
+            print('There is no trained generator or discriminator at this location, starting training from scratch.')
 
     visualize_training(cfg)
 

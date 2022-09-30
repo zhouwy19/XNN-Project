@@ -6,7 +6,7 @@ import random
 import numpy as np
 import jittor.dataset as dataset
 from PIL import Image
-import jittor.transform as transforms
+import torchvision.transforms as transforms
 from abc import ABC, abstractmethod
 
 
@@ -78,15 +78,15 @@ def get_params(opt, size):
     return {'crop_pos': (x, y), 'flip': flip}
 
 
-def get_transform(opt, params=None, grayscale=False, method=transforms.InterpolationMode.BICUBIC, convert=True):
+def get_transform(opt, params=None, grayscale=False, convert=True):
     transform_list = []
     if grayscale:
         transform_list.append(transforms.Grayscale(1))
     if 'resize' in opt.preprocess:
         osize = [opt.load_size, opt.load_size]
-        transform_list.append(transforms.Resize(osize, method))
+        transform_list.append(transforms.Resize(osize, interpolation=3))
     elif 'scale_width' in opt.preprocess:
-        transform_list.append(transforms.Lambda(lambda img: __scale_width(img, opt.load_size, opt.crop_size, method)))
+        transform_list.append(transforms.Lambda(lambda img: __scale_width(img, opt.load_size, opt.crop_size)))
 
     if 'crop' in opt.preprocess:
         if params is None:
@@ -95,7 +95,7 @@ def get_transform(opt, params=None, grayscale=False, method=transforms.Interpola
             transform_list.append(transforms.Lambda(lambda img: __crop(img, params['crop_pos'], opt.crop_size)))
 
     if opt.preprocess == 'none':
-        transform_list.append(transforms.Lambda(lambda img: __make_power_2(img, base=4, method=method)))
+        transform_list.append(transforms.Lambda(lambda img: __make_power_2(img, base=4)))
 
     if not opt.no_flip:
         if params is None:
@@ -112,7 +112,7 @@ def get_transform(opt, params=None, grayscale=False, method=transforms.Interpola
     return transforms.Compose(transform_list)
 
 
-def __make_power_2(img, base, method=transforms.InterpolationMode.BICUBIC):
+def __make_power_2(img, base):
     ow, oh = img.size
     h = int(round(oh / base) * base)
     w = int(round(ow / base) * base)
@@ -120,16 +120,16 @@ def __make_power_2(img, base, method=transforms.InterpolationMode.BICUBIC):
         return img
 
     __print_size_warning(ow, oh, w, h)
-    return img.resize((w, h), method)
+    return img.resize((w, h), Interpolation=3)
 
 
-def __scale_width(img, target_size, crop_size, method=transforms.InterpolationMode.BICUBIC):
+def __scale_width(img, target_size, crop_size):
     ow, oh = img.size
     if ow == target_size and oh >= crop_size:
         return img
     w = target_size
     h = int(max(target_size * oh / ow, crop_size))
-    return img.resize((w, h), method)
+    return img.resize((w, h), Interpolation=3)
 
 
 def __crop(img, pos, size):

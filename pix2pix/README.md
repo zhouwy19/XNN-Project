@@ -9,12 +9,12 @@ bash ./datasets/download_pix2pix_dataset.sh facades
 
 ## For training,run the next in your terminal:
 ```shell
-python train.py --dataroot ./datasets/facades --name facades_pix2pix --model pix2pix --direction BtoA
+python train.py --dataroot ./datasets/facades --name facades_pix2pix --model pix2pix --direction BtoA --display_id=-1 --no_html
 ```
 
 ## For testing,run the next in your terminal:
 ```shell
-python test.py --dataroot ./datasets/facades --direction BtoA --model pix2pix --name facades_pix2pix
+python3.7 test.py --dataroot ./datasets/facades --name facades_pix2pix --model pix2pix --direction BtoA --display_id=-1 --no_html
 ```
 If you failed to load your model,please try to change your lastest saved model`s extension from .pth to .pt.
 

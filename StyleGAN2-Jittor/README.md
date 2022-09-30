@@ -1,6 +1,16 @@
 
 # StyleGAN2-Jittor
-A Jittor Implementation of StyleGAN2. 
+A Jittor Implementation of StyleGAN2.
+
+## Results
+Below are samples of human faces generated with intermediate trained model of StyleGAN2-Jittor, trained on the FFHQ dataset with 128 resolution.
+![sample_image](https://github.com/zhouwy19/XNN-Project/blob/main/StyleGAN2-Jittor/samples/sample.png)
+
+## Set up Environment
+Please install the required packages by running:
+```
+pip install -r requirements.txt
+```
 
 ## Prepare Datasets
 Preprocessing of datasets is also adapted (and simplified) from NVIDIA's official implementation. 

@@ -1,6 +1,5 @@
 """This module contains simple helper functions """
 from __future__ import print_function
-# import torch
 import jittor
 import numpy as np
 from PIL import Image

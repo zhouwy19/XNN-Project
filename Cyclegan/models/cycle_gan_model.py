@@ -1,4 +1,3 @@
-import torch
 from pickletools import optimize
 import jittor 
 import itertools
@@ -138,22 +137,18 @@ class CycleGANModel(BaseModel):
         loss_D_fake = self.criterionGAN(pred_fake, False)
         # Combined loss and calculate gradients
         loss_D = (loss_D_real + loss_D_fake) * 0.5
-        #loss_D.backward()
-        # breakpoint()
         return loss_D
 
     def backward_D_A(self):
         """Calculate GAN loss for discriminator D_A"""
         fake_B = self.fake_B_pool.query(self.fake_B)
         self.loss_D_A = self.backward_D_basic(self.netD_A, self.real_B, fake_B)
-        # breakpoint()
         return self.loss_D_A
 
     def backward_D_B(self):
         """Calculate GAN loss for discriminator D_B"""
         fake_A = self.fake_A_pool.query(self.fake_A)
         self.loss_D_B = self.backward_D_basic(self.netD_B, self.real_A, fake_A)
-        # breakpoint()
         return self.loss_D_B
 
     def backward_G(self):
@@ -183,7 +178,6 @@ class CycleGANModel(BaseModel):
         self.loss_cycle_B = self.criterionCycle(self.rec_B, self.real_B) * lambda_B
         # combined loss and calculate gradients
         self.loss_G = self.loss_G_A + self.loss_G_B + self.loss_cycle_A + self.loss_cycle_B + self.loss_idt_A + self.loss_idt_B
-        # breakpoint()
         return(self.loss_G)
 
     def optimize_parameters(self):
@@ -193,12 +187,9 @@ class CycleGANModel(BaseModel):
         # G_A and G_B
         self.set_requires_grad([self.netD_A, self.netD_B], False)  # Ds require no gradients when optimizing Gs
         self.optimizer_G.zero_grad()  # set G_A and G_B's gradients to zero
-        #self.backward_G()   # calculate gradients for G_A and G_B
         self.optimizer_G.step(self.backward_G())       # update G_A and G_B's weights
         # D_A and D_B
         self.set_requires_grad([self.netD_A, self.netD_B], True)
         self.optimizer_D.zero_grad()   # set D_A and D_B's gradients to zero
-        #self.backward_D_A()      # calculate gradients for D_A
-        #self.backward_D_B()      # calculate graidents for D_B
         self.optimizer_D.step(self.backward_D_A())  # update D_A and D_B's weights
         self.optimizer_D.step(self.backward_D_B())

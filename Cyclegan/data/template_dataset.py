@@ -62,7 +62,7 @@ class TemplateDataset(BaseDataset):
 
         Step 1: get a random image path: e.g., path = self.image_paths[index]
         Step 2: load your data from the disk: e.g., image = Image.open(path).convert('RGB').
-        Step 3: convert your data to a PyTorch tensor. You can use helpder functions such as self.transform. e.g., data = self.transform(image)
+        Step 3: convert your data to a jittor Var. You can use helpder functions such as self.transform. e.g., data = self.transform(image)
         Step 4: return a data point as a dictionary.
         """
         path = 'temp'    # needs to be a string

@@ -39,7 +39,7 @@ class ColorizationDataset(BaseDataset):
         self.dir = os.path.join(opt.dataroot, opt.phase)
         self.AB_paths = sorted(make_dataset(self.dir, opt.max_dataset_size))
         assert(opt.input_nc == 1 and opt.output_nc == 2 and opt.direction == 'AtoB')
-        # self.transform = get_transform(self.opt, convert=False)
+        self.transform = get_transform(self.opt, convert=False)
 
     def __getitem__(self, index):
         """Return a data point and its metadata information.

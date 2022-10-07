@@ -15,7 +15,13 @@ pip install pillow
 pip install tqdm
 ```
 # Pretrained models
-Available on Baidu drive `<to be uploaded>`
+Available on Baidu drive 
+```
+通过百度网盘分享的文件：diffusio…
+链接:https://pan.baidu.com/s/1oqioEpf8Kid4eKQM-7km9A?pwd=729j 
+提取码:729j
+复制这段内容打开「百度网盘APP 即可获取」
+```
 # How to use
 With this, you can load, train, and save your diffusion models, as well as generate sample images, compute
 fid score, and interpolate between two images.

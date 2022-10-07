@@ -35,7 +35,8 @@ def sample_save_many(
             count = i*trainer.batch_size
             samples = batch_to_image(trainer.model.sample(size))
             for j, im in enumerate(samples):
-                im.save(save_dir / f'{count+j}.{image_ext}')
+                num_places = math.floor(math.log10(num_samples+1))
+                im.save(save_dir / f'{count+j:0{num_places}}.{image_ext}')
             pbar.update(size)
 
 def sample_save_tile(
